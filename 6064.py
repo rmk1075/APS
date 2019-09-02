@@ -1,14 +1,12 @@
+# x + km = y + kn이 되어야 한다 - 공배수를 이용한 방법
+def run(m,n,x,y):
+    while x <= m*n:
+        if (x-y)%n == 0:
+            return x
+        x += m
+    return -1
+
 T = int(input())
-for t in range(T):
-    M, N, x, y = map(int, input().split())
-    count = 0
-
-    t = x
-    temp = []
-    count = 0
-    while t not in temp:
-        t = (t + M) % N
-        count +=
-
-    if y in temp:
-        print
+for _ in range(T):
+    m, n, x, y = map(int, input().split())
+    print(run(m,n,x,y))
