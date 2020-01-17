@@ -35,8 +35,7 @@ public class Main {
             }
 
             if(isEnd) {
-                if(maxVal < interval) maxVal = interval;
-
+                maxVal = Math.max(maxVal, interval);
                 left = interval+1;
             } else {
                 right = interval;
@@ -47,7 +46,7 @@ public class Main {
         int minVal = Integer.MAX_VALUE, router = houses[0];
         for(int i = 0; i < N; i++) {
             if(maxVal <= houses[i]-router) {
-                if(houses[i]-router < minVal) minVal = houses[i]-router;
+                minVal = Math.min(minVal, houses[i]-router);
                 router = houses[i];
             }
         }
