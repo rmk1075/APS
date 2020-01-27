@@ -1,25 +1,23 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
+import java.util.PriorityQueue;
 
-class Node implements Comparable<Node> {
-    int cost;
-    int idx;
+class Vertex implements Comparable<Vertex> {
+    int distance, idx;
 
-    Node(int cost, int idx) {
-        this.cost = cost;
+    Vertex(int distance, int idx) {
+        this.distance = distance;
         this.idx = idx;
     }
 
     @Override
-    public int compareTo(Node o) {
-        if (this.cost < o.cost)
+    public int compareTo(Vertex o) {
+        if (this.distance < o.distance)
             return -1;
-        else if (this.cost == o.cost)
+        else if (this.distance == o.distance)
             return 0;
         else
             return 1;
@@ -27,152 +25,173 @@ class Node implements Comparable<Node> {
 }
 
 class Edge {
-    int v2;
-    int weight;
+    int v, w;
 
-    Edge(int v2, int weight) {
-        this.v2 = v2;
-        this.weight = weight;
+    Edge(int v, int w) {
+        this.v = v;
+        this.w = w;
     }
 }
 
 public class Main {
-
-    static ArrayList<Edge>[] adj;
-    static int[] cost;
-    static final int INF = Integer.MAX_VALUE;
-    static int[] visited;
-
+    static int V, E, K;
+    static int[] distance;
+    static boolean[] check;
+    static ArrayList<Edge>[] edges;
+    static PriorityQueue<Vertex> queue;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int V = Integer.parseInt(st.nextToken());
-        int E = Integer.parseInt(st.nextToken());
-        int K = Integer.parseInt(br.readLine());
 
-        adj = new ArrayList[V + 1];
-        cost = new int[V + 1];
-        visited = new int[V + 1];
-        Arrays.fill(cost, INF);
+        V = Integer.parseInt(st.nextToken());
+        E = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(br.readLine());
+        check = new boolean[V + 1];
 
-        for (int i = 0; i < E; i++) {
+        distance = new int[V + 1];
+        for (int i = 0; i < V + 1; i++) {
+            distance[i] = Integer.MAX_VALUE;
+        }
+
+        edges = new ArrayList[V + 1];
+        for(int i = 0; i < V + 1; i++) {
+            edges[i] = new ArrayList<>();
+        }
+        for(int i = 0; i < E; i++) {
             st = new StringTokenizer(br.readLine());
+
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
             int w = Integer.parseInt(st.nextToken());
 
-            if (adj[u] == null)
-                adj[u] = new ArrayList<>();
-            if (adj[v] == null)
-                adj[v] = new ArrayList<>();
-            adj[u].add(new Edge(v, w));
+            edges[u].add(new Edge(v, w));
         }
 
         dijkstra(K);
 
         StringBuilder sb = new StringBuilder("");
         for (int i = 1; i <= V; i++) {
-            if (cost[i] != INF)
-                sb.append(cost[i] + "\n");
-            else
-                sb.append("INF\n");
+            if (check[i] == false) sb.append("INF\n");
+            else sb.append(distance[i] + "\n");
         }
+
         System.out.println(sb);
     }
 
-    static void dijkstra(int K) {
+    public static void dijkstra(int idx) {
+        queue = new PriorityQueue<Vertex>();
+        queue.offer(new Vertex(0, K));
 
-        PriorityQueue<Node> q = new PriorityQueue<>();
-        q.offer(new Node(0, K));
-        cost[K] = INF;
+        while(!queue.isEmpty()) {
+            Vertex vertex = queue.poll();
 
-        while (!q.isEmpty()) {
+            if(check[vertex.idx] == true) continue;
+            check[vertex.idx] = true;
 
-            Node node = q.poll();
-            int now = node.idx;
+            if(distance[vertex.idx] < vertex.distance) continue;
+            distance[vertex.idx] = vertex.distance;
 
-            if (visited[now] == 0) visited[now] = 1;
-            else continue;
-
-            if (node.cost < cost[now]) cost[now] = node.cost;
-            else continue;
-
-            for (int i = 0; i < adj[now].size(); i++) {
-                q.offer(new Node(cost[now] + adj[now].get(i).weight, adj[now].get(i).v2));
+            for(int i = 0; i < edges[vertex.idx].size(); i++) {
+                queue.offer(new Vertex(distance[vertex.idx] + edges[vertex.idx].get(i).w, edges[vertex.idx].get(i).v));
             }
         }
     }
 }
 
-// https://sunpil.tistory.com/132
-
 // import java.io.BufferedReader;
 // import java.io.InputStreamReader;
-// // import java.util.StringTokenizer;
 // import java.io.IOException;
 // import java.util.ArrayList;
+// import java.util.StringTokenizer;
 // import java.util.PriorityQueue;
 
+// class Vertex implements Comparable<Vertex> {
+//     int distance, idx;
+
+//     Vertex(int distance, int idx) {
+//         this.distance = distance;
+//         this.idx = idx;
+//     }
+
+//     @Override
+//     public int compareTo(Vertex o) {
+//         if (this.distance < o.distance)
+//             return -1;
+//         else if (this.distance == o.distance)
+//             return 0;
+//         else
+//             return 1;
+//     }
+// }
+
 // class Edge {
-//     int y, w;
-    
-//     Edge(int y, int w) {
-//         this.y = y;
+//     int v, w;
+
+//     Edge(int v, int w) {
+//         this.v = v;
 //         this.w = w;
 //     }
 // }
 
 // public class Main {
 //     static int V, E, K;
-//     static int[] updated;
+//     static int[] distance;
+//     static boolean[] check;
 //     static ArrayList<Edge>[] edges;
-//     static PriorityQueue<Integer> queue;
+//     static PriorityQueue<Vertex> queue;
 //     public static void main(String[] args) throws IOException {
 //         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//         // StringTokenizer st = new StringTokenizer(br.readLine());
+//         StringTokenizer st = new StringTokenizer(br.readLine());
 
-//         // V = Integer.parseInt(st.nextToken());
-//         // E = Integer.parseInt(st.nextToken());
-//         // K = Integer.parseInt(br.readLine());
-        
-//         String[] str = br.readLine().split(" ");
-//         V = Integer.parseInt(str[0]);
-//         E = Integer.parseInt(str[1]);
+//         V = Integer.parseInt(st.nextToken());
+//         E = Integer.parseInt(st.nextToken());
 //         K = Integer.parseInt(br.readLine());
+//         check = new boolean[V + 1];
 
-//         edges = new ArrayList[V+1];
-//         updated = new int[V+1];
-//         for(int i = 0; i < V+1; i++) {
-//             edges[i] = new ArrayList<Edge>();
-//             updated[i] = Integer.MAX_VALUE;
+//         distance = new int[V + 1];
+//         edges = new ArrayList[V + 1];
+//         for (int i = 0; i < V + 1; i++) {
+//             distance[i] = Integer.MAX_VALUE;
+//             edges[i] = new ArrayList<>();
 //         }
-//         updated[K] = 0;
 
 //         for(int i = 0; i < E; i++) {
-//             // st = new StringTokenizer(br.readLine());
-//             // edges[Integer.parseInt(st.nextToken())].add(new Edge(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
-//             str = br.readLine().split(" ");
-//             edges[Integer.parseInt(str[0])].add(new Edge(Integer.parseInt(str[1]), Integer.parseInt(str[2])));
+//             st = new StringTokenizer(br.readLine());
+
+//             int u = Integer.parseInt(st.nextToken());
+//             int v = Integer.parseInt(st.nextToken());
+//             int w = Integer.parseInt(st.nextToken());
+
+//             edges[u].add(new Edge(v, w));
 //         }
 
-//         queue = new PriorityQueue<Integer>();
-//         queue.add(K);
-//         while(!queue.isEmpty()) {
-//             int current = queue.poll();
-//             for(int i = 0; i < edges[current].size(); i++) {
-//                 int candidate = edges[current].get(i).y;
-//                 int weight = edges[current].get(i).w;
+//         dijkstra(K);
 
-//                 if(updated[current] + weight < updated[candidate]) {
-//                     updated[candidate] = updated[current] + weight;
-//                     queue.add(candidate);
-//                 }
+//         StringBuilder sb = new StringBuilder("");
+//         for (int i = 1; i <= V; i++) {
+//             if (check[i] == false) sb.append("INF\n");
+//             else sb.append(distance[i] + "\n");
+//         }
+
+//         System.out.println(sb);
+//     }
+
+//     public static void dijkstra(int idx) {
+//         queue = new PriorityQueue<Vertex>();
+//         queue.offer(new Vertex(0, K));
+
+//         while(!queue.isEmpty()) {
+//             Vertex vertex = queue.poll();
+
+//             if(check[vertex.idx] == true) continue;
+//             check[vertex.idx] = true;
+
+//             if(distance[vertex.idx] < vertex.distance) continue;
+//             distance[vertex.idx] = vertex.distance;
+
+//             for(int i = 0; i < edges[vertex.idx].size(); i++) {
+//                 queue.offer(new Vertex(distance[vertex.idx] + edges[vertex.idx].get(i).w, edges[vertex.idx].get(i).v));
 //             }
 //         }
-
-//         for(int i = 1; i < V+1; i++) {
-//             if(updated[i] == Integer.MAX_VALUE) System.out.println("INF");
-//             else System.out.println(updated[i]);
-//         }   
 //     }
 // }
