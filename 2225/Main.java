@@ -22,11 +22,6 @@ public class Main {
             }
         }
 
-        // TODO:
-        // for(int i = 0; i < K+1; i++) {
-        //     System.out.println(Arrays.toString(nums[i]));
-        // }
-
         System.out.println(nums[K][N]);
     }
 }
