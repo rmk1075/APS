@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -54,10 +53,6 @@ public class Main {
             while(0 < size--) {
                 Hanoi h = queue.poll();
 
-                // TODO:
-                // System.out.println(count);
-                // System.out.println(h.toString());
-
                 if(check(h.towers)) {
                     System.out.println((count-1));
                     System.exit(0);
@@ -75,9 +70,7 @@ public class Main {
                             h.towers[move[i][1]] = h.towers[move[i][1]].substring(0, h.towers[move[i][1]].length() - 1);
                             continue;
                         }
-                        // TODO:
-                        // System.out.println(h.toString());
-
+                        
                         visited.add(h.toString());
                         queue.offer(new Hanoi(h.towers));
 
