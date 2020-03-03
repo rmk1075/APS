@@ -49,7 +49,7 @@ public class Main {
         queue = new LinkedList<Location>();
         
         queue.offer(new Location(srcX, srcY));
-        updated[srcX][srcY] = 0;
+        updated[srcX][srcY] = 1;
 
         int count = 0, x, y;
         Location current;
