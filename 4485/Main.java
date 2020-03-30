@@ -32,10 +32,7 @@ public class Main {
             PriorityQueue<Node> pq = new PriorityQueue<>();
             for(int i = 0; i < N; i++) {
                 StringTokenizer st = new StringTokenizer(br.readLine());
-                for(int j = 0; j < N; j++) {
-                    map[i][j] = Integer.parseInt(st.nextToken());
-                    // pq.offer(new Node(i, j, Integer.MAX_VALUE));
-                }
+                for(int j = 0; j < N; j++)  map[i][j] = Integer.parseInt(st.nextToken());
             }
             
             coins = new int[N][N];
