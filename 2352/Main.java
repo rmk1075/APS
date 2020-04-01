@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -15,8 +16,8 @@ public class Main {
         for(int i = 2; i <= n; i++) {
             if(count[len] < ports[i]) count[++len] = ports[i];
             else {
-                int j = 1;
-                for(; j <= len; j++) if(ports[i] < count[j]) break;
+                int j = Arrays.binarySearch(count, 1, len, ports[i]);
+                j = j < 0 ? -j-1 : j;
                 len = (len < j) ? j : len;
                 count[j] = ports[i];
             }
