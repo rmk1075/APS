@@ -5,9 +5,10 @@ import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 class Edge implements Comparable<Edge> {
-    int u, v, w;
+    int u, v;
+    double w;
 
-    Edge(int u, int v, int w) {
+    Edge(int u, int v, double w) {
         this.u = u;
         this.v = v;
         this.w = w;
@@ -15,39 +16,47 @@ class Edge implements Comparable<Edge> {
 
     @Override
     public int compareTo(Edge o) {
-        return this.w - o.w;
+        return (this.w < o.w) ? -1 : 1;
     }
 }
 
 public class Main {
-    static int N, M, parents[];
+    static int N, parents[];
+    static float nodes[][];
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        parents = new int[N+1];
-        for(int i = 1; i <= N; i++) parents[i] = i;
+        N = Integer.parseInt(br.readLine());
+        parents = new int[N];
+        nodes = new float[N][2];
+        StringTokenizer st;
 
         PriorityQueue<Edge> edges = new PriorityQueue<>();
-        for(int i = 0; i < M; i++) {
+        for(int i = 0; i < N; i++) {
+            parents[i] = i;
             st = new StringTokenizer(br.readLine());
-            edges.offer(new Edge(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
+            float x = Float.parseFloat(st.nextToken()), y = Float.parseFloat(st.nextToken());
+            nodes[i][0] = x;
+            nodes[i][1] = y;
+
+            for(int j = 0; j < i; j++) {
+                edges.offer(new Edge(i, j, Math.sqrt(Math.pow(nodes[j][0] - x, 2) + Math.pow(nodes[j][1] - y, 2))));
+            }
         }
 
-        int cnt = 0, ans = 0, maxLen = 0;
+        int cnt = 0;
+        double ans = 0;
         while(cnt < N-1) {
             Edge edge = edges.poll();
             int a = find(edge.u), b = find(edge.v);
+
             if(a != b) {
                 parents[b] = a;
                 ans += edge.w;
-                maxLen = Math.max(maxLen, edge.w);
                 cnt++;
             }
         }
 
-        System.out.println(ans - maxLen);
+        System.out.println(ans);
     }
 
     public static int find(int n) {
