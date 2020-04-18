@@ -17,9 +17,15 @@ public class Main {
             nums = new int[ch.length];
             N = nums.length;
             for(int i = 0; i < N; i++) nums[i] = ch[i] - '0';
+            Arrays.sort(nums);
             set.clear();
             visited = 0;
-            for(int i = 0; i < N; i++) {
+            
+            visited |= (1 << 0);
+            find(1, nums[0]);
+            visited &= ~(1 << 0);
+            for(int i = 1; i < N; i++) {
+                if(nums[i] == nums[i-1]) continue;
                 visited |= (1 << i);
                 find(1, nums[i]);
                 visited &= ~(1 << i);
