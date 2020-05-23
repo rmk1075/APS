@@ -26,7 +26,7 @@ public class Main {
     }
 
     public static boolean check(int val) {
-        for(int i = 2; i < val; i++) {
+        for(int i = 2; i < val / 2 + 1; i++) {
             if(val % i == 0) return false;
         }
         return true;
