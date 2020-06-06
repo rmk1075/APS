@@ -8,6 +8,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         arr = new int[N + 1];
@@ -18,8 +19,9 @@ public class Main {
             int a = Integer.parseInt(st.nextToken()), b = Integer.parseInt(st.nextToken()), c = Integer.parseInt(st.nextToken());
 
             if(a == 0) arr[find(b)] = find(c);
-            else System.out.println((find(b) == find(c)) ? "YES" : "NO");
+            else sb.append((find(b) == find(c)) ? "YES\n" : "NO\n");
         }
+        System.out.println(sb);
     }
 
     public static int find(int idx) {
