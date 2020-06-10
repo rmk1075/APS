@@ -16,7 +16,7 @@ class Location {
 }
 
 public class Main {
-    static int N, M, keys = 1, count[][];
+    static int N, M, numOfLight = 1, count[][];
     static int[] dx = {-1, 0, 1, 0}, dy = {0, -1, 0, 1};
     static boolean[][] check;
     static ArrayList<Location>[][] map;
@@ -44,31 +44,33 @@ public class Main {
         for(Location key : map[1][1]) {
             if(!check[key.x][key.y]) {
                 check[key.x][key.y] = true;
-                keys++;
+                numOfLight++;
             }
         }
-        count[1][1] = keys;
+        count[1][1] = numOfLight;
 
         while(!queue.isEmpty()) {
             Location current = queue.poll();
+            if(count[current.x][current.y] < numOfLight) continue;
+            
             int x, y;
             for(int d = 0; d < 4; d++) {
                 x = current.x + dx[d];
                 y = current.y + dy[d];
-                if(x == 0 || y == 0 || N < x || N < y || !check[x][y] || count[x][y] == keys) continue;
+                if(x == 0 || y == 0 || N < x || N < y || !check[x][y] || count[x][y] == numOfLight) continue;
                 if(count[x][y] == 0) {
                     for(Location key : map[x][y]) {
                         if(!check[key.x][key.y]) {
                             check[key.x][key.y] = true;
-                            keys++;
+                            numOfLight++;
                         }
                     }
                 }
-                count[x][y] = keys;
+                count[x][y] = numOfLight;
                 queue.offer(new Location(x, y));
             }
         }
         
-        System.out.println(keys);
+        System.out.println(numOfLight);
     }
 }
