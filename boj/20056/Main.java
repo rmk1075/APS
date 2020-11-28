@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 class FireBall {
-    int m, s, d;
+    int r, c, m, s, d;
 
-    FireBall(int m, int s, int d) {
+    FireBall(int r, int c, int m, int s, int d) {
+        this.r = r;
+        this.c = c;
         this.m = m;
         this.s = s;
         this.d = d;
@@ -18,7 +20,8 @@ class FireBall {
 public class Main {
     static int N, M, K;
     static int[] dx = { -1, -1, 0, 1, 1, 1, 0, -1 }, dy = { 0, 1, 1, 1, 0, -1, -1, -1 };
-    static List<FireBall>[][] map, tempMap;
+    static List<FireBall> fireBalls;
+    static List<FireBall>[][] map;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -27,13 +30,11 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
+        fireBalls = new ArrayList<>();
         map = new List[N][N];
-        tempMap = new List[N][N];
         for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                tempMap[i][j] = new ArrayList<>();
+            for (int j = 0; j < N; j++)
                 map[i][j] = new ArrayList<>();
-            }
         }
 
         for (int i = 0; i < M; i++) {
@@ -45,26 +46,16 @@ public class Main {
             int s = Integer.parseInt(st.nextToken());
             int d = Integer.parseInt(st.nextToken());
 
-            map[r][c].add(new FireBall(m, s, d));
+            map[r][c].add(new FireBall(r, c, m, s, d));
         }
 
         while (0 < K--) {
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    tempMap[i][j].clear();
-                }
-            }
+            fireBalls.clear();
 
             order();
 
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    if (tempMap[i][j].isEmpty())
-                        continue;
-
-                    map[i][j].addAll(tempMap[i][j]);
-                }
-            }
+            for (FireBall fb : fireBalls)
+                map[fb.r][fb.c].add(fb);
 
             check();
         }
@@ -119,7 +110,7 @@ public class Main {
             y -= N;
         }
 
-        tempMap[x][y].add(fb);
+        fireBalls.add(new FireBall(x, y, fb.m, fb.s, fb.d));
     }
 
     public static void check() {
@@ -151,16 +142,16 @@ public class Main {
         s /= size;
 
         if (isEven || isOdd) {
-            map[r][c].add(new FireBall(m, s, 0));
-            map[r][c].add(new FireBall(m, s, 2));
-            map[r][c].add(new FireBall(m, s, 4));
-            map[r][c].add(new FireBall(m, s, 6));
+            map[r][c].add(new FireBall(r, c, m, s, 0));
+            map[r][c].add(new FireBall(r, c, m, s, 2));
+            map[r][c].add(new FireBall(r, c, m, s, 4));
+            map[r][c].add(new FireBall(r, c, m, s, 6));
             return;
         }
 
-        map[r][c].add(new FireBall(m, s, 1));
-        map[r][c].add(new FireBall(m, s, 3));
-        map[r][c].add(new FireBall(m, s, 5));
-        map[r][c].add(new FireBall(m, s, 7));
+        map[r][c].add(new FireBall(r, c, m, s, 1));
+        map[r][c].add(new FireBall(r, c, m, s, 3));
+        map[r][c].add(new FireBall(r, c, m, s, 5));
+        map[r][c].add(new FireBall(r, c, m, s, 7));
     }
 }
