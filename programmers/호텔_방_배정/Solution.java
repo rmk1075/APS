@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 class Solution {
@@ -23,12 +25,18 @@ class Solution {
     }
 
     public long find(Map<Long, Long> map, long number) {
+        List<Long> list = new ArrayList<>();
         long result = number;
         while (true) {
             if (map.containsKey(result)) {
+                list.add(result);
                 result = map.get(result);
             } else
                 break;
+        }
+
+        for (long num : list) {
+            map.put(num, result);
         }
 
         return result;
