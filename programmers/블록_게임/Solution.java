@@ -83,7 +83,7 @@ class Solution {
         if (checkA(board, index, x, y)) {
             blocks[index] = new Block(x, y + 1, x + 1, y + 1);
         } else if (checkB(board, index, x, y)) {
-            blocks[index] = new Block(x, y - 1, x - 1, y - 1);
+            blocks[index] = new Block(x, y - 1, x + 1, y - 1);
         } else if (checkC(board, index, x, y)) {
             blocks[index] = new Block(x, y + 1, x, y + 2);
         } else if (checkD(board, index, x, y)) {
