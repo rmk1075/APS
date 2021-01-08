@@ -17,41 +17,100 @@ public class ListNode {
 
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        ListNode result = null;
-
         int N = lists.length;
+        if (N == 0)
+            return null;
+
         ListNode[] points = new ListNode[N];
         for (int i = 0; i < N; i++)
             points[i] = lists[i];
 
-        int index, minVal;
-        ListNode current = null;
-        while (true) {
-            index = -1;
-            minVal = Integer.MAX_VALUE;
-            for (int i = 0; i < N; i++) {
-                if (points[i] == null)
-                    continue;
+        ListNode l1 = points[0], l2 = null;
+        for (int i = 1; i < N; i++) {
+            l2 = points[i];
+            if (l2 == null)
+                continue;
 
-                if (points[i].val < minVal) {
-                    index = i;
-                    minVal = points[i].val;
-                }
-            }
-
-            if (index == -1)
-                break;
-
-            if (current == null) {
-                result = current = points[index];
-            } else {
-                current.next = points[index];
-                current = current.next;
-            }
-
-            points[index] = points[index].next;
+            l1 = mergeTwoLists(l1, l2);
         }
+
+        return l1;
+    }
+
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode result, current;
+        if (l1 != null && l2 == null)
+            return l1;
+        else if (l1 == null && l2 != null)
+            return l2;
+        else if (l1 == null & l2 == null)
+            return null;
+
+        if (l2.val < l1.val) {
+            result = current = l2;
+            l2 = l2.next;
+        } else {
+            result = current = l1;
+            l1 = l1.next;
+        }
+
+        while (l1 != null && l2 != null) {
+            if (l2.val < l1.val) {
+                current.next = l2;
+                l2 = l2.next;
+            } else {
+                current.next = l1;
+                l1 = l1.next;
+            }
+            current = current.next;
+        }
+
+        if (l1 != null)
+            current.next = l1;
+        else if (l2 != null)
+            current.next = l2;
 
         return result;
     }
 }
+
+// class Solution {
+// public ListNode mergeKLists(ListNode[] lists) {
+// ListNode result = null;
+
+// int N = lists.length;
+// ListNode[] points = new ListNode[N];
+// for (int i = 0; i < N; i++)
+// points[i] = lists[i];
+
+// int index, minVal;
+// ListNode current = null;
+// while (true) {
+// index = -1;
+// minVal = Integer.MAX_VALUE;
+// for (int i = 0; i < N; i++) {
+// if (points[i] == null)
+// continue;
+
+// if (points[i].val < minVal) {
+// index = i;
+// minVal = points[i].val;
+// }
+// }
+
+// if (index == -1)
+// break;
+
+// if (current == null) {
+// result = current = points[index];
+// } else {
+// current.next = points[index];
+// current = current.next;
+// }
+
+// points[index] = points[index].next;
+// }
+
+// return result;
+// }
+// }
