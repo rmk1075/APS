@@ -1,3 +1,5 @@
+import java.util.PriorityQueue;
+
 public class ListNode {
     int val;
     ListNode next;
@@ -21,48 +23,77 @@ class Solution {
         if (N == 0)
             return null;
 
-        ListNode result = null, current;
-
-        int index;
-        for (index = 0; index < N; index++) {
-            if (lists[index] != null) {
-                result = lists[index];
-                break;
-            }
-        }
-
-        for (int i = index + 1; i < N; i++) {
-            current = result;
-
-            if (lists[i] == null)
+        PriorityQueue<ListNode> pq = new PriorityQueue<>((node1, node2) -> node1.val - node2.val);
+        for (ListNode list : lists) {
+            if (list == null)
                 continue;
+            pq.offer(list);
+        }
 
-            if (lists[i].val < current.val) {
-                result = lists[i];
-                lists[i] = lists[i].next;
-                result.next = current;
-                current = result;
-            }
+        ListNode head = new ListNode(), current = head;
+        while (!pq.isEmpty()) {
+            ListNode node = pq.poll();
+            current.next = node;
+            current = current.next;
 
-            while (lists[i] != null) {
-                int val = lists[i].val;
-
-                ListNode past = null;
-                while (current != null && current.val <= val) {
-                    past = current;
-                    current = current.next;
-                }
-
-                past.next = lists[i];
-                lists[i] = lists[i].next;
-                past.next.next = current;
-                current = past.next;
+            if (node.next != null) {
+                pq.offer(node.next);
             }
         }
 
-        return result;
+        return head.next;
     }
 }
+
+////////////////////////
+// class Solution {
+// public ListNode mergeKLists(ListNode[] lists) {
+// int N = lists.length;
+// if (N == 0)
+// return null;
+
+// ListNode result = null, current;
+
+// int index;
+// for (index = 0; index < N; index++) {
+// if (lists[index] != null) {
+// result = lists[index];
+// break;
+// }
+// }
+
+// for (int i = index + 1; i < N; i++) {
+// current = result;
+
+// if (lists[i] == null)
+// continue;
+
+// if (lists[i].val < current.val) {
+// result = lists[i];
+// lists[i] = lists[i].next;
+// result.next = current;
+// current = result;
+// }
+
+// while (lists[i] != null) {
+// int val = lists[i].val;
+
+// ListNode past = null;
+// while (current != null && current.val <= val) {
+// past = current;
+// current = current.next;
+// }
+
+// past.next = lists[i];
+// lists[i] = lists[i].next;
+// past.next.next = current;
+// current = past.next;
+// }
+// }
+
+// return result;
+// }
+// }
 
 ///////////////////////////
 // class Solution {
