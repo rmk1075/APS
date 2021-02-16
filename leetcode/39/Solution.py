@@ -17,7 +17,7 @@ class Solution:
                 return
             
             if target < value + num:
-                continue
+                return
             
             temp.append(num)
             self.dfs(result, candidates, target, i, value + num, temp)
