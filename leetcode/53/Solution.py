@@ -6,10 +6,8 @@ class Solution:
                 val += num
             else:
                 val = num
-                
             if maxVal < val:
                 maxVal = val
-                
         return maxVal
 
 # class Solution:
