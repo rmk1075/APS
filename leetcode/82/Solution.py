@@ -8,19 +8,36 @@ class Solution(object):
     def deleteDuplicates(self, head):
         point = ListNode(-101, head)
         last, current = point, head
-        while current.next:
-            cnt = 1
+        while current:
             while current.next and current.val == current.next.val:
                 current = current.next
-                cnt += 1
             
-            if 1 < cnt:
+            if last.next != current:
                 current = current.next
-                continue
-
-            last.next = current
-            last = current
-            current = current.next
-        last.next = current
+                last.next = current
+            else:
+                last = current
+                current = current.next
 
         return point.next 
+
+# class Solution(object):
+#     def deleteDuplicates(self, head):
+#         point = ListNode(-101, head)
+#         last, current = point, head
+#         while current.next:
+#             cnt = 1
+#             while current.next and current.val == current.next.val:
+#                 current = current.next
+#                 cnt += 1
+            
+#             if 1 < cnt:
+#                 current = current.next
+#                 continue
+
+#             last.next = current
+#             last = current
+#             current = current.next
+#         last.next = current
+
+#         return point.next 
