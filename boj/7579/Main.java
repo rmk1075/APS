@@ -1,10 +1,11 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 import java.io.IOException;
 
 public class Main {
-    static int N, M, maxCost;
+    static int N, M;
     static int[] A, C;
     static int[][] dp;
 
@@ -25,32 +26,29 @@ public class Main {
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             C[i] = Integer.parseInt(st.nextToken());
-            maxCost += C[i];
         }
 
-        dp = new int[N][10000];
-        int answer = Integer.MAX_VALUE;
-        for (int i = C[0]; i < 10000; i++) {
-            dp[0][i] = A[0];
-
-            if (M <= dp[0][i])
-                answer = Math.min(answer, i);
+        dp = new int[N][10001];
+        for(int i = 0; i < N; i++) {
+            Arrays.fill(dp[i], -1);
         }
 
-        for (int i = 1; i < N; i++) {
-            int m = A[i], c = C[i];
-            for (int j = 0; j < 10000; j++) {
-                if (c <= j)
-                    dp[i][j] = Math.max(dp[i - 1][j - c] + m, dp[i - 1][j]);
-                else
-                    dp[i][j] = dp[i - 1][j];
-
-                if (M <= dp[i][j])
-                    answer = Math.min(answer, j);
+        int result = Integer.MAX_VALUE;
+        dp[0][C[0]] = A[0];
+        if(M <= A[0]) result = C[0];
+        for(int i = 1; i < N; i++) {
+            dp[i][C[i]] = A[i];
+            if(M <= A[i]) result = Math.min(result, C[i]);
+            for(int j = 0; j < 10001; j++) {
+                if(dp[i - 1][j] == -1) continue;
+                dp[i][j] = Math.max(dp[i][j], dp[i - 1][j]);
+                dp[i][j + C[i]] = Math.max(dp[i][j + C[i]], dp[i - 1][j] + A[i]);
+                if(M <= dp[i][j + C[i]]) {
+                    result = Math.min(result, j + C[i]);
+                }
             }
         }
-
-        System.out.println(answer);
+        System.out.println(result);
     }
 }
 
