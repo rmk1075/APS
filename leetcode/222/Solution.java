@@ -15,7 +15,19 @@
  */
 class Solution {
     public int countNodes(TreeNode root) {
-        if(root == null) return 0;
-        return countNodes(root.left) + countNodes(root.right) + 1;
+        int level = getLevel(root);
+        if(level < 0) return 0;
+        return level - 1 == getLevel(root.right) ? (1 << level) + countNodes(root.right) : (1 << (level-1)) + countNodes(root.left);
+    }
+
+    public int getLevel(TreeNode root) {
+        return root == null ? -1 : getLevel(root.left) + 1;
     }
 }
+
+// class Solution {
+//     public int countNodes(TreeNode root) {
+//         if(root == null) return 0;
+//         return countNodes(root.left) + countNodes(root.right) + 1;
+//     }
+// }
