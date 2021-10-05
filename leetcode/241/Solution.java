@@ -1,12 +1,10 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 class Solution {
     public List<Integer> diffWaysToCompute(String expression) {
         List<Integer> result = new LinkedList<>();
-        int N = expression.length();
-        for(int i = 0; i < N; i++) {
+        for(int i = 0; i < expression.length(); i++) {
             char ch = expression.charAt(i);
             if(ch == '+' || ch == '-' || ch == '*') {
                 List<Integer> left = diffWaysToCompute(expression.substring(0, i));
