@@ -1,17 +1,14 @@
 class Solution {
     public int hIndex(int[] citations) {
         int N = citations.length;
-        int[] counts = new int[N + 1];
-        for(int citation : citations) {
-            if(N < citation) counts[N]++;
-            else counts[citation]++;
+        int left = 0;
+        int right = N - 1;
+        while(left <= right) {
+            int mid = (left + right) >> 1;
+            if(N - mid == citations[mid]) return N - mid;
+            if(N - mid < citations[mid]) right = mid - 1;
+            else left = mid + 1;
         }
-
-        int sum = 0;
-        for(int i = N; -1 < i; i--) {
-            sum += counts[i];
-            if(i <= sum) return i;
-        }
-        return 0;
+        return N - left;
     }
 }
