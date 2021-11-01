@@ -41,15 +41,12 @@ class Solution {
 
     private boolean valid(StringBuffer sb) {
         char[] arr = sb.toString().toCharArray();
-        Stack<Character> stack = new Stack<>();
+        int cnt = 0;
         for(char ch : arr) {
-            if(ch == '(') stack.push(ch);
-            else if(ch == ')') {
-                if(stack.isEmpty()) return false;
-                if(stack.peek() == '(') stack.pop();
-                else stack.push(ch);
-            }
+            if(ch == '(') cnt++;
+            else if(ch == ')') cnt--;
+            if(cnt < 0) return false;
         }
-        return stack.isEmpty();
+        return cnt == 0;
     }
 }
