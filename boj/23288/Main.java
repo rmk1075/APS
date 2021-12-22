@@ -63,6 +63,7 @@ public class Main {
     static int[] dx = {0, 1, 0, -1};
     static int[] dy = {1, 0, -1, 0};
     static int[][] board;
+    static int[][] score;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -70,6 +71,7 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
         board = new int[N][M];
+        score = new int[N][M];
         for(int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for(int j = 0; j < M; j++) {
@@ -97,6 +99,8 @@ public class Main {
     }
 
     public static int getPoint(int x, int y) {
+        if(score[x][y] != 0) return score[x][y];
+
         boolean[][] visited = new boolean[N][M];
         visited[x][y] = true;
         Queue<int[]> queue = new LinkedList<>();
@@ -113,6 +117,14 @@ public class Main {
                 result += point;
                 visited[nx][ny] = true;
                 queue.add(new int[]{nx, ny});
+            }
+        }
+        
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < M; j++) {
+                if(visited[i][j]) {
+                    score[i][j] = result;
+                }
             }
         }
         return result;
