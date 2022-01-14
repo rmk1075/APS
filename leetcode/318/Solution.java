@@ -1,5 +1,3 @@
-import java.util.Comparator;
-
 class Solution {
     public int maxProduct(String[] words) {
         int N = words.length;
