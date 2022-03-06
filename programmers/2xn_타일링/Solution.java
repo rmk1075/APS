@@ -1,3 +1,9 @@
+/**
+ * description
+ * 
+ * dp 로 구현한다.
+ * 피보나치와 같이 f(n) = f(n - 1) + f(n - 2) 로 계산된다.
+ */
 class Solution {
     static int MOD = 1_000_000_007;
     public int solution(int n) {
