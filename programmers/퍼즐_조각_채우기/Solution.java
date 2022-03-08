@@ -1,8 +1,24 @@
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * overview
+ * 
+ * table 의 조각들 중에서 game_board 의 빈칸에 알맞는 조각의 개수를 찾아야한다.
+ * game_board 의 비어있는 공간과 table 의 조각들을 각각 읽어온다.
+ * 읽어온 공간과 조각을 비교하여 일치하는 조각들과 해당 조각들이 덮는 면적을 구하여 반환한다.
+ * 
+ * description
+ * 
+ * 각 조각들을 Puzzle 이라는 객체로 다룬다.
+ * Puzzle 타입은 조각을 직사각형 형태로 저장하는데, 전체 직사각형의 면적의 puzzle 과 행, 열의 크기인 r, c, 그리고 실제 조각이 덮는 면적인 size 를 멤버로 가진다.
+ * puzzle 행렬에서 실제 조각이 위치하는 요소를 true 로 지정했다.
+ * game_board 와 table 을 각각 bfs 로 탐색하여 빈 공간과 퍼즐 조각 리스트를 구한다.
+ * 이제 각 리스트의 요소들을 서로 비교하는데, 이때 조각은 회전이 가능하기 때문에 4가지 방향에 대해서 비교를 해야한다.
+ * 공간과 조각의 size 가 같은지 먼저 비교하고, r 과 c 를 비교하여 같은 경우에 맞춰서 각 방향에 대해서 요소들의 비교를 수행한다.
+ * 비교를 통해서 일치하는 경우에는 size 만큼을 answer 에 더하고 해당 퍼즐의 size 는 -1 로 설정하여 더이상 비교하지 않도록 한다.
+ */
 class Puzzle {
     int size, r, c;
     boolean[][] puzzle;
