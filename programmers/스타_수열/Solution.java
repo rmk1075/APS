@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -5,25 +6,24 @@ class Solution {
     public int solution(int[] a) {
         int N = a.length;
         if(N == 1) return 0;
-        Map<Integer, int[]> dp = new HashMap<>(); // int[] {last index, count}
+        int[][] dp = new int[N][2]; // {last index, count}
+        for(int i = 0; i < N; i++) dp[i][0] = -2;
         for(int i = 0; i < N - 1; i++) {
             int x = a[i];
             int y = a[i + 1];
             if(x == y) continue;
-            if(dp.containsKey(x)) {
-                int[] value = dp.get(x);
-                if(1 < i - value[0]) dp.put(x, new int[]{i, value[1] + 1});
-            } else dp.put(x, new int[]{i, 1});
-            if(dp.containsKey(y)) {
-                int[] value = dp.get(y);
-                if(1 < i - value[0]) dp.put(y, new int[]{i, value[1] + 1});
-            } else dp.put(y, new int[]{i, 1});
+            if(1 < i - dp[x][0]) {
+                dp[x][0] = i;
+                dp[x][1]++;
+            }
+            if(1 < i - dp[y][0]) {
+                dp[y][0] = i;
+                dp[y][1]++;
+            }
         }
         int answer = 0;
-        for(int i = 0; i < 2; i++) {
-            for(int key : dp.keySet()) {
-                answer = Math.max(answer, dp.get(key)[1]);
-            }
+        for(int[] arr : dp) {
+            answer = Math.max(answer, arr[1]);
         }
         return answer * 2;
     }
