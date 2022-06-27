@@ -1,0 +1,11 @@
+SELECT ID, NAME, HOST_ID
+  FROM PLACES
+ WHERE HOST_ID IN (
+    SELECT HOST_ID
+      FROM (
+        SELECT HOST_ID, COUNT(ID) CNT
+          FROM PLACES
+         GROUP BY HOST_ID
+      ) A
+    WHERE 1 < CNT
+ )
