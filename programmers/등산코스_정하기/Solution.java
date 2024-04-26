@@ -1,6 +1,5 @@
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -59,7 +58,7 @@ class Solution {
 
       int intensity = current[1];
       for (int[] next : graph[current[0]]) {
-        if (gateSet.contains(next)) {
+        if (gateSet.contains(next[0])) {
           continue;
         }
 
