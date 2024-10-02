@@ -1,40 +1,63 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 public class Main {
-    static int[][] dp;
-    static char[] A, B;
-    static String lcs[][];
+    private static char[] A;
+    private static char[] B;
+    private static int M;
+    private static int N;
+
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        A = br.readLine().toCharArray();
-        B = br.readLine().toCharArray();
-        int a = A.length + 1, b = B.length + 1;
-        lcs = new String[a][b];
-        dp = new int[a][b];
+        init();
+        int[][] mem = find();
+        int len = mem[M][N];
+        System.out.println(len);
+        if (len != 0) {
+            System.out.println(findFromMem(mem));
+        }
+    }
 
-        for(int i = 0; i < a; i++) lcs[i][0] = "";
-        for(int i = 0; i < b; i++) lcs[0][i] = "";
-
-        for(int i = 1; i < a; i++) {
-            for(int j = 1; j < b; j++) {
-                if(A[i-1] == B[j-1]) {
-                    dp[i][j] = dp[i-1][j-1] + 1;
-                    lcs[i][j] = lcs[i-1][j-1] + String.valueOf(A[i-1]);
+    private static String findFromMem(int[][] mem) {
+        StringBuilder sb = new StringBuilder();
+        int x = M;
+        int y = N;
+        while (0 < x && 0 < y) {
+            if (A[x - 1] == B[y - 1]) {
+                sb.insert(0, A[x - 1]);
+                x--;
+                y--;
+            } else {
+                if (mem[x - 1][y] < mem[x][y - 1]) {
+                    y--;
                 } else {
-                    if(dp[i-1][j] < dp[i][j-1]) {
-                        dp[i][j] = dp[i][j-1];
-                        lcs[i][j] = lcs[i][j-1];
-                    } else {
-                        dp[i][j] = dp[i-1][j];
-                        lcs[i][j] = lcs[i-1][j];
-                    }
+                    x--;
                 }
             }
         }
+        return sb.toString();
+    }
 
-        System.out.println(dp[a - 1][b - 1] + "\n" + lcs[a - 1][b - 1]);
-    }    
+    private static int[][] find() {
+        int[][] mem = new int[M + 1][N + 1];
+        for (int i = 1; i <= M; i++) {
+            for (int j = 1; j <= N; j++) {
+                if (A[i - 1] == B[j - 1]) {
+                    mem[i][j] = mem[i - 1][j - 1] + 1;
+                } else {
+                    mem[i][j] = Math.max(mem[i - 1][j], mem[i][j - 1]);
+                }
+            }
+        }
+        return mem;
+    }
+
+    private static void init() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        A = br.readLine().toCharArray();
+        M = A.length;
+
+        B = br.readLine().toCharArray();
+        N = B.length;
+    }
 }
